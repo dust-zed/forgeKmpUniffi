@@ -17,3 +17,7 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
+
+**/src/androidMain/jniLibs/**
+**/src/jvmMain/resources/librust_core.*
+

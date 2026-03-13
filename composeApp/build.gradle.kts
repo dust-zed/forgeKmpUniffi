@@ -30,6 +30,7 @@ kotlin {
     
     sourceSets {
         androidMain.dependencies {
+            implementation(projects.rustBridge)
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
         }
@@ -47,6 +48,7 @@ kotlin {
             implementation(libs.kotlin.test)
         }
         jvmMain.dependencies {
+            implementation(projects.rustBridge)
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
         }
@@ -78,6 +80,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    sourceSets {
+        getByName("main") {
+            // 参数是相对于 composeApp 模块的相对路径
+            jniLibs.srcDir("../rustBridge/src/androidMain/jniLibs")
+        }
+    }
 }
 
 dependencies {
@@ -94,4 +102,10 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+// 告诉 Gradle：只要我想打包 JniLibs，就必须先等 rustBridge 把 .so 生成完毕
+tasks.matching { it.name.startsWith("merge") && it.name.endsWith("JniLibFolders") }.configureEach {
+    // 跨模块依赖任务！
+    dependsOn(project(":rustBridge").tasks.matching { it.name == "buildRustAndroid" })
 }
