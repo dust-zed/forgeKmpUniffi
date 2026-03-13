@@ -3,4 +3,14 @@ name = "rust-core"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+crate-type = ["cdylib"]
+name = "rust_core"
+
 [dependencies]
+uniffi = { version = "0.31", features = ["tokio", "cli"] }
+thiserror = "1.0"
+
+[[bin]]
+name = "uniffi-bindgen"
+path = "src/bin/uniffi-bindgen.rs"

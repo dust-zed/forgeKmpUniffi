@@ -1,0 +1,3 @@
+[bindings.kotlin]
+package_name = "org.forge.kmp.uniffi.rust"
+cdylib_name = "rust_core"
